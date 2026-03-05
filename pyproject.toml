@@ -1,0 +1,9 @@
+[project]
+name = "data-x-claude"
+version = "0.1.0"
+description = "Explorex Platform - Interactive data analysis"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.uv]
+workspace = { members = ["core/backend", "apps/explorex/backend"] }
