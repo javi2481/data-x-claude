@@ -9,7 +9,7 @@ app = FastAPI(title="DataFluxIT Core API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "https://*.lovable.app"],
+    allow_origins=["http://localhost:8080", "http://localhost:5173", "https://*.lovable.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

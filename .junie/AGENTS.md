@@ -21,4 +21,9 @@ Fuente de verdad técnica: core/backend/engine/contracts.py
 - Un paso no está terminado hasta que tiene tests pasando
 ---
 
+## Lecciones aprendidas
+- El CODER debe responder código Python puro sin bloques markdown (no usar ```python) para evitar SyntaxError en el kernel.
+- `localhost` resuelve a IPv6 (::1) en Windows; usar `127.0.0.1` explícitamente en `API_BASE` y configuraciones para evitar problemas de conexión.
+- El `PYTHONPATH` debe incluir `core/backend` al levantar uvicorn para que las importaciones del motor funcionen correctamente.
+
 No escribas código nuevo.

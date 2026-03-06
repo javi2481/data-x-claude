@@ -62,11 +62,11 @@ LiteLLM es la libreria que orquesta todas las llamadas LLM.
 OpenRouter es el proveedor de acceso a multiples modelos con una sola API key.
 
 **Roles generativos** (CODER, INTERPRETER, ANALYZER, RESPONDER):
-- Modelo: `openrouter/anthropic/claude-sonnet-4-5`
+- Modelo: `openrouter/anthropic/claude-3.5-sonnet`
 - On-premise fallback: `ollama/qwen2.5:32b`
 
 **Roles de validacion** (REVIEWER, VALIDATOR, VERIFIER):
-- Modelo: `openrouter/qwen/qwen3.5-9b`
+- Modelo: `openrouter/qwen/qwen3-32b`
 - Qwen3.5-9B usa Scaled RL — mejor instruction following que modelos 3x su tamano
 - On-premise fallback: `ollama/qwen3.5:9b`
 
@@ -142,7 +142,7 @@ data-x-claude/
 ```env
 # LLM Gateway
 OPENROUTER_API_KEY=
-DEFAULT_MODEL=openrouter/anthropic/claude-sonnet-4-5
+DEFAULT_MODEL=openrouter/anthropic/claude-3.5-sonnet
 FALLBACK_MODEL=openrouter/openai/gpt-4o
 OLLAMA_BASE_URL=http://localhost:11434
 ANALYSIS_TIMEOUT_SECONDS=60
@@ -156,7 +156,10 @@ CACHE_BACKEND=mongodb
 CACHE_TTL_MINUTES=60
 
 # CORS
-CORS_ORIGINS=http://localhost:5173
+CORS_ORIGINS=http://localhost:5173,http://localhost:8080,http://127.0.0.1:8080
+API_BASE=http://127.0.0.1:8001
+PORT=8001
+HOST=0.0.0.0
 ```
 
 ```env
@@ -165,9 +168,9 @@ JUPYTER_SERVER_URL=http://localhost:8888
 JUPYTER_SERVER_TOKEN=
 MAX_DATASET_ROWS=100000
 
-CODER_MODEL=openrouter/anthropic/claude-sonnet-4-5
-REVIEWER_MODEL=openrouter/qwen/qwen3.5-9b
-INTERPRETER_MODEL=openrouter/anthropic/claude-sonnet-4-5
+CODER_MODEL=openrouter/anthropic/claude-3.5-sonnet
+REVIEWER_MODEL=openrouter/qwen/qwen3-32b
+INTERPRETER_MODEL=openrouter/anthropic/claude-3.5-sonnet
 ```
 
 ---

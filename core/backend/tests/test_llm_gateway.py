@@ -23,7 +23,7 @@ async def test_call_success(gateway):
     mock_response.choices[0].message.content = "Response content"
     mock_response.usage.prompt_tokens = 10
     mock_response.usage.completion_tokens = 5
-    mock_response.model = "openrouter/anthropic/claude-sonnet-4-5"
+    mock_response.model = "openrouter/anthropic/claude-3.5-sonnet"
     
     gateway.router.acompletion = AsyncMock(return_value=mock_response)
     
@@ -32,7 +32,7 @@ async def test_call_success(gateway):
     assert result.content == "Response content"
     assert result.tokens_in == 10
     assert result.tokens_out == 5
-    assert result.model_used == "openrouter/anthropic/claude-sonnet-4-5"
+    assert result.model_used == "openrouter/anthropic/claude-3.5-sonnet"
     assert result.latency_ms >= 0
 
 @pytest.mark.asyncio
@@ -55,14 +55,14 @@ async def test_call_with_fallback(gateway):
     mock_response.choices[0].message.content = "Fallback response"
     mock_response.usage.prompt_tokens = 15
     mock_response.usage.completion_tokens = 10
-    mock_response.model = "ollama/qwen2.5:32b"
+    mock_response.model = "openrouter/qwen/qwen3-32b"
     
     gateway.router.acompletion = AsyncMock(return_value=mock_response)
     
     result = await gateway.call(role, messages)
     
     assert result.content == "Fallback response"
-    assert result.model_used == "ollama/qwen2.5:32b"
+    assert result.model_used == "openrouter/qwen/qwen3-32b"
 
 @pytest.mark.asyncio
 async def test_stream(gateway):

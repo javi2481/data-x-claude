@@ -166,12 +166,12 @@ JUPYTER_SERVER_TOKEN=
 MAX_DATASET_ROWS=100000
 
 # CODER: generative role -- needs reasoning and code quality
-CODER_MODEL=openrouter/anthropic/claude-sonnet-4-5
-# REVIEWER: validation role -- Qwen3.5-9B recommended (precision > creativity)
-# On-premise alternative: ollama/qwen3.5:9b
-REVIEWER_MODEL=openrouter/qwen/qwen3.5-9b
+CODER_MODEL=openrouter/anthropic/claude-3.5-sonnet
+# REVIEWER: validation role -- Qwen3-32B recommended (precision > creativity)
+# On-premise alternative: ollama/qwen2.5:32b
+REVIEWER_MODEL=openrouter/qwen/qwen3-32b
 # INTERPRETER: generative role -- needs natural language quality
-INTERPRETER_MODEL=openrouter/anthropic/claude-sonnet-4-5
+INTERPRETER_MODEL=openrouter/anthropic/claude-3.5-sonnet
 ```
 
 ---

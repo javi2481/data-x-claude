@@ -9,7 +9,7 @@ from engine.contracts import ProcessingNode
 # Configuración desde el .env
 CACHE_BACKEND = os.getenv("CACHE_BACKEND", "mongodb")
 CACHE_TTL_MINUTES = int(os.getenv("CACHE_TTL_MINUTES", "1440"))  # Default 24h
-MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://localhost:27017")
+MONGO_URI = os.getenv("MONGO_URI", "127.0.0.1:27017")
 DB_NAME = "explorex_cache"
 
 _client = None
@@ -19,7 +19,7 @@ async def _get_collection():
     global _client, _collection
     if _collection is None:
         if _client is None:
-            _client = AsyncIOMotorClient(MONGODB_URL)
+            _client = AsyncIOMotorClient(MONGO_URI)
         _collection = _client[DB_NAME]["cache"]
         # Asegurar índice de expiración si es MongoDB
         await _collection.create_index("expires_at", expireAfterSeconds=0)

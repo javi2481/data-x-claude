@@ -1,3 +1,9 @@
 
 datasets_prueba/
-
+core/backend/.env
+apps/explorex/backend/.env
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.output.txt

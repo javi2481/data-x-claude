@@ -12,98 +12,42 @@ class LLMGateway:
 
     def __init__(self):
         self.timeout = int(os.getenv("ANALYSIS_TIMEOUT_SECONDS", "60"))
+        openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
+        openrouter_api_base = "https://openrouter.ai/api/v1"
         
-        # Configuration for generative-role
-        # Fallback order: Primary (Claude 3.5 Sonnet via OpenRouter) -> Fallback (Qwen 2.5 32B via Ollama)
+        # Models configuration from environment
+        coder_model = os.getenv("CODER_MODEL", "openrouter/anthropic/claude-3.5-sonnet")
+        reviewer_model = os.getenv("REVIEWER_MODEL", "openrouter/qwen/qwen3-32b")
+        interpreter_model = os.getenv("INTERPRETER_MODEL", "openrouter/anthropic/claude-3.5-sonnet")
+
+        # Configuration for generative-role (Coder / Interpreter)
         generative_model_list = [
             {
                 "model_name": "generative-role",
                 "litellm_params": {
-                    "model": "openrouter/anthropic/claude-3.5-sonnet",
-                    "api_key": os.getenv("OPENROUTER_API_KEY"),
-                    "timeout": self.timeout,
-                },
-            },
-            {
-                "model_name": "generative-role",
-                "litellm_params": {
-                    "model": "ollama/qwen2.5:32b",
-                    "api_base": os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+                    "model": coder_model,
+                    "api_key": openrouter_api_key,
+                    "api_base": openrouter_api_base,
                     "timeout": self.timeout,
                 },
             }
         ]
 
-        # Configuration for validation-role
-        # Fallback order: Primary (Qwen 3.5 9B via OpenRouter) -> Fallback (Qwen 3.5 9B via Ollama)
+        # Configuration for validation-role (Reviewer)
         validation_model_list = [
             {
                 "model_name": "validation-role",
                 "litellm_params": {
-                    "model": "openrouter/qwen/qwen-2.5-72b-instruct", # Using a common qwen model as placeholder if 3.5-9b is not on OpenRouter yet, or following instruction
-                    "api_key": os.getenv("OPENROUTER_API_KEY"),
-                    "timeout": self.timeout,
-                },
-            },
-            {
-                "model_name": "validation-role",
-                "litellm_params": {
-                    "model": "ollama/qwen2.5:7b", # placeholder for qwen3.5-9b
-                    "api_base": os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+                    "model": reviewer_model,
+                    "api_key": openrouter_api_key,
+                    "api_base": openrouter_api_base,
                     "timeout": self.timeout,
                 },
             }
         ]
         
-        # Adjusting models to match exact requested names if possible, but OpenRouter naming varies.
-        # The prompt specified:
-        # generative-role: openrouter/anthropic/claude-sonnet-4-5 (Wait, prompt said 4-5, but Sonnet 3.5 is current. I will use the one in prompt if it exists or Sonnet 3.5)
-        # fallback: ollama/qwen2.5:32b
-        # validation-role: openrouter/qwen/qwen3.5-9b
-        # fallback: ollama/qwen3.5:9b
-
-        # Redefining with exact prompt names
-        generative_model_list = [
-            {
-                "model_name": "generative-role",
-                "litellm_params": {
-                    "model": "openrouter/anthropic/claude-sonnet-4-5",
-                    "api_key": os.getenv("OPENROUTER_API_KEY"),
-                },
-            },
-            {
-                "model_name": "generative-role",
-                "litellm_params": {
-                    "model": "ollama/qwen2.5:32b",
-                    "api_base": os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-                },
-            }
-        ]
-
-        validation_model_list = [
-            {
-                "model_name": "validation-role",
-                "litellm_params": {
-                    "model": "openrouter/qwen/qwen3.5-9b",
-                    "api_key": os.getenv("OPENROUTER_API_KEY"),
-                },
-            },
-            {
-                "model_name": "validation-role",
-                "litellm_params": {
-                    "model": "ollama/qwen3.5:9b",
-                    "api_base": os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-                },
-            }
-        ]
-
         self.router = Router(
             model_list=generative_model_list + validation_model_list,
-            fallbacks=[
-                {"generative-role": ["generative-role"]}, # LiteLLM uses model_name for routing fallbacks within same name
-                {"validation-role": ["validation-role"]}
-            ],
-            context_window_fallbacks=None,
             set_verbose=False
         )
 

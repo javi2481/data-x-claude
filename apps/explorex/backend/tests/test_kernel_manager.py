@@ -1,7 +1,7 @@
 import pytest
 import asyncio
 from unittest.mock import AsyncMock, MagicMock, patch
-from ..kernel_manager import KernelManager, KernelOutput
+from apps.explorex.backend.kernel_manager import KernelManager, KernelOutput
 
 @pytest.fixture
 def km():
@@ -45,9 +45,13 @@ async def test_execute_success(km):
     # Mockear flujo de mensajes de iopub
     # 1. stream stdout
     # 2. status idle
+    # 3. stream results (nuevo flujo de inspección con delimitadores)
+    # 4. status idle (fin inspección)
     mock_kc.get_iopub_msg = AsyncMock()
     mock_kc.get_iopub_msg.side_effect = [
         {"msg_type": "stream", "content": {"name": "stdout", "text": "hello"}},
+        {"msg_type": "status", "content": {"execution_state": "idle"}},
+        {"msg_type": "stream", "content": {"name": "stdout", "text": "__RESULT_START__\n{}\n__RESULT_END__\n__SUMMARY_START__\n{}\n__SUMMARY_END__"}},
         {"msg_type": "status", "content": {"execution_state": "idle"}}
     ]
     
@@ -62,7 +66,7 @@ async def test_execute_error(km):
     mock_kc = MagicMock()
     mock_kc.get_iopub_msg = AsyncMock()
     mock_kc.get_iopub_msg.side_effect = [
-        {"msg_type": "error", "content": {"traceback": ["Error line 1"]}},
+        {"msg_type": "error", "content": {"ename": "NameError", "evalue": "name 'invalid' is not defined", "traceback": ["Error line 1"]}},
         {"msg_type": "status", "content": {"execution_state": "idle"}}
     ]
     

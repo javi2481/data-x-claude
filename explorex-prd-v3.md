@@ -206,7 +206,7 @@ TERMINADO: .ipynb exportado corre en Jupyter sobre el mismo dataset y reproduce 
 | MongoDB Atlas | Flexibilidad de schema para arbol de nodos y artefactos por nodo |
 | FastAPI + uv | Async nativo, tipado, performance. Siempre uv add, nunca pip install. |
 | Zustand | Estado del arbol en frontend |
-| Modelos por defecto | CODER: claude-sonnet / REVIEWER: claude-sonnet / INTERPRETER: claude-sonnet |
+| Modelos por defecto | CODER: claude-3.5-sonnet / REVIEWER: qwen3-32b / INTERPRETER: claude-3.5-sonnet |
 
 ---
 

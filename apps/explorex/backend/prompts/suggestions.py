@@ -14,12 +14,6 @@ Devuelve un JSON con:
 Todo en español.
 """
 
-reviewer_template = """
-Valida que estas sugerencias sean coherentes con el schema: {schema}.
-Código/JSON: {code}
-Devuelve solo el JSON corregido o validado.
-"""
-
 interpreter_template = """
 Presenta estas sugerencias al usuario de forma amigable.
 Sugerencias: {prompt}

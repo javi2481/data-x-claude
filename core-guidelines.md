@@ -145,9 +145,9 @@ Never assume a cloud model is available.
 
 Recommended on-premise models via Ollama (March 2026):
 - Generative roles (CODER, ANALYZER, RESPONDER): llama3.2 or qwen2.5:32b
-- Validation roles (REVIEWER, VALIDATOR, VERIFIER): qwen3.5:9b
-  Qwen3.5-9B is trained with Scaled RL -- better instruction following and fewer hallucinations
-  than models 3x its size. It is the default recommendation for all validation roles on-premise.
+- Validation roles (REVIEWER, VALIDATOR, VERIFIER): qwen3:32b
+  Qwen3-32B is the recommended model for all validation roles -- cloud or on-premise.
+  It outperforms models 3x its size on instruction-following benchmarks due to Scaled RL training.
 - Embedding (Knowledge Base): nomic-embed-text or all-minilm
 
 ---
@@ -160,16 +160,16 @@ Roles fall into two functional categories with different quality requirements:
 
 **Generative roles** (CODER, ANALYZER, RESPONDER, EXTRACTOR)
 These roles produce creative or complex output. Use the most capable model available.
-- Cloud default: openrouter/anthropic/claude-sonnet-4-5
+- Cloud default: openrouter/anthropic/claude-3.5-sonnet
 - Cloud fallback: openrouter/openai/gpt-4o-mini
 - On-premise: ollama/qwen2.5:32b (best quality) or ollama/llama3.2 (faster)
 
 **Validation roles** (REVIEWER, VALIDATOR, VERIFIER)
 These roles check, verify, and flag problems. They need precision and reliability, not creativity.
-Qwen3.5-9B is the recommended model for all validation roles -- cloud or on-premise.
+Qwen3-32B is the recommended model for all validation roles -- cloud or on-premise.
 It outperforms models 3x its size on instruction-following benchmarks due to Scaled RL training.
-- Cloud: openrouter/qwen/qwen3.5-9b or openrouter/qwen/qwen3.5-35b-a3b
-- On-premise: ollama/qwen3.5:9b
+- Cloud: openrouter/qwen/qwen3-32b
+- On-premise: ollama/qwen2.5:32b
 
 ### LiteLLM Router configuration (llm_gateway.py)
 
@@ -178,15 +178,15 @@ router_config = {
     "model_list": [
         {
             "model_name": "validation-role",
-            "litellm_params": {"model": "openrouter/qwen/qwen3.5-9b", "api_key": OPENROUTER_KEY}
+            "litellm_params": {"model": "openrouter/qwen/qwen3-32b", "api_key": OPENROUTER_KEY}
         },
         {
             "model_name": "validation-role",   # fallback: on-premise
-            "litellm_params": {"model": "ollama/qwen3.5:9b", "api_base": OLLAMA_BASE_URL}
+            "litellm_params": {"model": "ollama/qwen2.5:32b", "api_base": OLLAMA_BASE_URL}
         },
         {
             "model_name": "generative-role",
-            "litellm_params": {"model": "openrouter/anthropic/claude-sonnet-4-5", "api_key": OPENROUTER_KEY}
+            "litellm_params": {"model": "openrouter/anthropic/claude-3.5-sonnet", "api_key": OPENROUTER_KEY}
         },
         {
             "model_name": "generative-role",   # fallback: on-premise

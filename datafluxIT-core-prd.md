@@ -165,7 +165,7 @@ Capacidades:
 ```python
 # Variables de entorno del gateway (comunes a todas las apps)
 OPENROUTER_API_KEY=
-DEFAULT_MODEL=openrouter/anthropic/claude-sonnet-4-5
+DEFAULT_MODEL=openrouter/anthropic/claude-3.5-sonnet
 FALLBACK_MODEL=openrouter/openai/gpt-4o
 OLLAMA_BASE_URL=http://localhost:11434    # para modo on-premise
 ANALYSIS_TIMEOUT_SECONDS=60
@@ -281,7 +281,7 @@ Estas variables son comunes a todas las apps. Cada app puede agregar las suyas.
 ```env
 # LLM Gateway
 OPENROUTER_API_KEY=
-DEFAULT_MODEL=openrouter/anthropic/claude-sonnet-4-5
+DEFAULT_MODEL=openrouter/anthropic/claude-3.5-sonnet
 FALLBACK_MODEL=openrouter/openai/gpt-4o
 OLLAMA_BASE_URL=http://localhost:11434
 ANALYSIS_TIMEOUT_SECONDS=60
@@ -305,7 +305,10 @@ LANGFUSE_PUBLIC_KEY=
 LANGFUSE_SECRET_KEY=
 
 # CORS
-CORS_ORIGINS=http://localhost:5173
+CORS_ORIGINS=http://localhost:5173,http://localhost:8080,http://127.0.0.1:8080
+API_BASE=http://127.0.0.1:8001
+PORT=8001
+HOST=0.0.0.0
 ```
 
 ---

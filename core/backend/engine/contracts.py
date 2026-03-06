@@ -45,6 +45,15 @@ class ProcessingSession(BaseModel):
     last_active: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     ttl_minutes: int = 30                # configurable por app
 
+    # Mapeos para el frontend (Explorex)
+    @property
+    def fileName(self) -> str:
+        return self.input_metadata.get("filename", "Unknown")
+
+    @property
+    def createdAt(self) -> str:
+        return self.created_at.isoformat()
+
 class ProcessingNode(BaseModel):
     id: str
     parent_id: Optional[str] = None            # None para nodo raiz
@@ -62,3 +71,24 @@ class ProcessingNode(BaseModel):
     error_log: Optional[str] = None
     children: List[str] = Field(default_factory=list)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+    # Mapeos para el frontend (Explorex)
+    @property
+    def parentId(self) -> Optional[str]:
+        return self.parent_id
+
+    @property
+    def sessionId(self) -> str:
+        return self.session_id
+
+    @property
+    def triggerType(self) -> str:
+        return self.trigger_type
+
+    @property
+    def triggerInput(self) -> str:
+        return self.trigger_input
+
+    @property
+    def createdAt(self) -> str:
+        return self.created_at.isoformat()

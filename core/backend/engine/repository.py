@@ -11,7 +11,7 @@ class Repository:
     """MongoDB repository for sessions and processing nodes."""
 
     def __init__(self, mongo_uri: str | None = None, db_name: str | None = None) -> None:
-        uri = mongo_uri or os.getenv("MONGO_URI", "mongodb://localhost:27017")
+        uri = mongo_uri or os.getenv("MONGO_URI", "127.0.0.1:27017")
         name = db_name or os.getenv("MONGO_DB_NAME", "explorex")
         self._client = AsyncIOMotorClient(uri)
         self._db: AsyncIOMotorDatabase = self._client[name]
