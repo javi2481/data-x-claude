@@ -1,10 +1,20 @@
 from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import List, Dict, Any
 from engine import session_manager, repository, cache_manager
 from engine.contracts import ProcessingSession, ProcessingNode
 
 app = FastAPI(title="DataFluxIT Core API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "https://*.lovable.app"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 repo = repository.Repository()
 
 @app.post("/sessions", response_model=ProcessingSession)
